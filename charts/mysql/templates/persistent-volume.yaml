@@ -1,0 +1,33 @@
+{{ if .Values.persistentVolume.create -}}
+{{- $fullName := include "mysql.fullname" . -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ $fullName }}-pv
+  namespace: {{ .Values.namespace | default "default" }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.capacityStorage | default "8Gi" }}
+  # volumeMode field requires BlockVolume Alpha feature gate to be enabled.
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.persistentVolumeReclaimPolicy | default "Delete" }}
+  # use StorageClass name
+  storageClassName: {{ $fullName }}-storageclass
+  local:
+    path: {{ .Values.persistentVolume.localPath }}
+  nodeAffinity:
+    required:
+      # kubenertes node. using kubectl get node
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              {{- with .Values.persistentVolume.matchExpressions.values }}
+              values:
+                # mongodb volume, we need storageclass, pv, pvc first
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+{{ end -}}
+---

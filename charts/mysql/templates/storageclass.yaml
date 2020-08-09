@@ -1,0 +1,14 @@
+{{ if .Values.storageClass.create -}}
+{{- $fullName := include "mysql.fullname" . -}}
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: {{ $fullName }}-storageclass
+  namespace: {{ .Values.namespace | default "default" }}
+provisioner: kubernetes.io/no-provisioner
+{{ if .Values.storageClass.volumeBindingMode }}
+volumeBindingMode: WaitForFirstConsumer
+{{ end }}
+allowVolumeExpansion: {{ .Values.storageClass.allowVolumeExpansion }}
+{{ end -}}
+---
