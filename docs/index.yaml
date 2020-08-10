@@ -15,7 +15,7 @@ entries:
   elasticsearch:
     - created: 2020-08-09T21:37:37.522838478+07:00
       description: A elasticsearch server instance
-      digest: f3ff904876cf892289bf6f442dc18dbc7cb518b7da62db178d92c58a8e209fc4
+      digest: 2446e831944abf357dda40cc0310d51b839b3ed5378420f7ee2227d5ecf244a3
       home: https://ndtg-helm.github.io
       name: mysql
       sources:
