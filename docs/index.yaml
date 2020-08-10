@@ -2,14 +2,25 @@ apiVersion: v1
 entries:
   mysql:
     - created: 2020-08-09T21:37:37.522838478+07:00
-      description: A mysql version 8.0.21 server instance
-      digest: e24bfe244d21856db5b0bf6f1c275cb5d460a187c8a36060ef077c36d3a67051
+      description: A mysql server instance
+      digest: 61d443636689f02c6101b94edef603dc76e002e7b0cba632512100353bc0b6db
       home: https://ndtg-helm.github.io
       name: mysql
       sources:
         - https://ndtg-helm.github.io/charts
       urls:
-        - https://ndtg-helm.github.io/charts/mysql-8.0.21.tar.gz
-      version: 8.0.21
+        - https://ndtg-helm.github.io/charts/mysql.tar.gz
+      version: 0.1.0
 
+  elasticsearch:
+    - created: 2020-08-09T21:37:37.522838478+07:00
+      description: A elasticsearch server instance
+      digest: c0d8062829994b0a86f8422a92b980a4aec65f1b3fbcec3580da7708530d07f2
+      home: https://ndtg-helm.github.io
+      name: mysql
+      sources:
+        - https://ndtg-helm.github.io/charts
+      urls:
+        - https://ndtg-helm.github.io/charts/elasticsearch.tar.gz
+      version: 0.1.0
 generated: 2020-08-09T21:37:37.522838478+07:00

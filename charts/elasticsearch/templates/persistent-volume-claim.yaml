@@ -1,5 +1,5 @@
 {{ if .Values.persistentVolumeClaim.create -}}
-{{- $fullName := include "mysql.fullname" . -}}
+{{- $fullName := include "elasticsearch.fullname" . -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

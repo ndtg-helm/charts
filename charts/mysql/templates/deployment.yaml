@@ -33,15 +33,30 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.development.env }}
           env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.mysqlRootPassword }}
+            {{- if .Values.mysqlDatabase }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.mysqlDatabase }}
+            {{- end }}
+            {{- if .Values.mysqlPassword }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.mysqlPassword }}
+            {{- end }}
+            {{- if .Values.mysqlPassword }}
+            - name: MYSQL_USER
+              value: {{ .Values.mysqlPassword }}
+            {{- end }}
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          {{- with .Values.deployment.volumeMounts }}
+          volumeMounts:
           # map volumeMounts with volume
           {{- toYaml . | nindent 12 }}
           {{- end }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.development.containerPort | default 3306 }}
-              protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -56,7 +71,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.development.volumes }}
+      {{- with .Values.deployment.volumes }}
       volumes:
       # mongodb volume, we need storageclass, pv, pvc first
       {{- toYaml . | nindent 8 }}

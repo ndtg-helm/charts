@@ -7,9 +7,13 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.service.elasticsearchPort }}
+      targetPort: elasticsearch
       protocol: TCP
-      name: http
+      name: elasticsearch
+    - port: {{ .Values.service.communicationPort }}
+      targetPort: communication
+      protocol: TCP
+      name: communication
   selector:
     {{- include "elasticsearch.selectorLabels" . | nindent 4 }}

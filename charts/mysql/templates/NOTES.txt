@@ -33,12 +33,16 @@ To connect to your database:
 
 To upgrade this helm chart:
 
-    1. Obtain the password as described on the 'Administrator credentials' section and set the 'persistentVolume.localPath' parameter as shown below:
+    1. Obtain the password as described on the 'Administrator credentials' section and set the 'mountPath' parameter as shown below:
 
         ROOT_PASSWORD=$(kubectl get secret --namespace default mysql-secret \
             -o jsonpath="{.data.MYSQL_ROOT_PASSWORD}" | base64 --decode)
-        helm upgrade mysql ndtg-helm/mysql --set persistentVolume.localPath=$HOME/mysql
+        helm upgrade mysql ndtg-helm/mysql --set mountPath=$HOME/mysql
 
 NOTE: It may take a few minutes for the LoadBalancer IP to be available.
 
     You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "mysql.fullname" . }}'
+
+To change helm variable
+
+    helm install --set mountPath=$HOME/Storages/mysql mysql ndtg-helm/mysql

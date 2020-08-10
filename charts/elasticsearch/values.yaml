@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: elasticsearch
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "7.8.1"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -38,7 +38,8 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  elasticsearchPort: 9200
+  communicationPort: 9300
 
 ingress:
   enabled: false
@@ -77,3 +78,33 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# ----- Custom Chart
+mountPath: "/elasticsearch"
+
+deployment:
+  volumeMounts:
+    # It mount from container. It map with persistentVolume localPath
+    - name: elasticsearch-persistent-storage
+      mountPath: /usr/share/elasticsearch/data
+
+  volumes:
+    # mongodb volume, we need storageclass, pv, pvc first
+    - name: elasticsearch-persistent-storage
+      # use PersistentVolumeClaim name. Install helm folder in server first to get claimName.
+      persistentVolumeClaim:
+        claimName: ndtg-elasticsearch-pvc
+
+# PersistentVolumeClaim
+persistentVolumeClaim:
+  create: true
+  name: ndtg-elasticsearch-pvc
+
+# PersistentVolume
+persistentVolume:
+  create: true
+
+# StorageClass
+storageClass:
+  create: true
+  allowVolumeExpansion: true

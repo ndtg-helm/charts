@@ -78,18 +78,19 @@ tolerations: []
 
 affinity: {}
 
-# Map Volume With Container
-development:
-  containerPort: 3306
+# ----- Custom Chart
 
-  env:
-    # MYSQL_ROOT_PASSWORD
-    - name: MYSQL_ROOT_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: mysql-secret
-          key: MYSQL_ROOT_PASSWORD
+mountPath: "/mysql"
 
+mysqlRootPassword: "root"
+
+mysqlDatabase: ""
+
+mysqlPassword: ""
+
+mysqlUser: ""
+
+deployment:
   volumeMounts:
     # It mount from container. It map with persistentVolume localPath
     - name: mysql-persistent-storage
@@ -100,20 +101,16 @@ development:
     - name: mysql-persistent-storage
       # use PersistentVolumeClaim name. Install helm folder in server first to get claimName.
       persistentVolumeClaim:
-        claimName: mysql-pvc
-    # env
-    - name: mysql-secret-enviroment
-      secret:
-        secretName: mysql-secret
+        claimName: ndtg-mysql-pvc
 
-persistentVolume:
-  create: true
-  localPath: "/home/nguyentuangiang/Storages/mysql"
-  capacityStorage: 10Gi
-
+# PersistentVolumeClaim
 persistentVolumeClaim:
   create: true
-  name: mysql-pvc
+  name: ndtg-mysql-pvc
+
+# PersistentVolume
+persistentVolume:
+  create: true
 
 # StorageClass
 storageClass:
