@@ -35,21 +35,15 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- with .Values.development.env }}
           env:
-            # map volumeMounts with volume
-            {{- toYaml . | nindent 12 }}
+          # map volumeMounts with volume
+          {{- toYaml . | nindent 12 }}
           {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.development.containerPort | default 3306 }}
               protocol: TCP
-          {{- with .Values.development.volumeMounts }}
-          volumeMounts:
-            # map volumeMounts with volume
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -64,6 +58,6 @@ spec:
       {{- end }}
       {{- with .Values.development.volumes }}
       volumes:
-        # mongodb volume, we need storageclass, pv, pvc first
-        {{- toYaml . | nindent 8 }}
+      # mongodb volume, we need storageclass, pv, pvc first
+      {{- toYaml . | nindent 8 }}
       {{- end }}

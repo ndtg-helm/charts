@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  mysql:
+    - created: 2020-08-09T21:37:37.522838478+07:00
+      description: A mysql version 8.0.21 server instance
+      digest: e24bfe244d21856db5b0bf6f1c275cb5d460a187c8a36060ef077c36d3a67051
+      home: https://ndtg-helm.github.io
+      name: mysql
+      sources:
+        - https://ndtg-helm.github.io/charts
+      urls:
+        - https://ndtg-helm.github.io/charts/mysql-8.0.21.tar.gz
+      version: 8.0.21
+
+generated: 2020-08-09T21:37:37.522838478+07:00

@@ -8,7 +8,7 @@ image:
   repository: mysql
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 5.6
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -85,7 +85,10 @@ development:
   env:
     # MYSQL_ROOT_PASSWORD
     - name: MYSQL_ROOT_PASSWORD
-      value: root
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
+          key: MYSQL_ROOT_PASSWORD
 
   volumeMounts:
     # It mount from container. It map with persistentVolume localPath
@@ -107,9 +110,6 @@ persistentVolume:
   create: true
   localPath: "/home/nguyentuangiang/Storages/mysql"
   capacityStorage: 10Gi
-  matchExpressions:
-    values:
-      - nguyentuangiang
 
 persistentVolumeClaim:
   create: true

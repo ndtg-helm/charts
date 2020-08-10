@@ -7,27 +7,13 @@ metadata:
   namespace: {{ .Values.namespace | default "default" }}
 spec:
   capacity:
-    storage: {{ .Values.persistentVolume.capacityStorage | default "8Gi" }}
-  # volumeMode field requires BlockVolume Alpha feature gate to be enabled.
-  volumeMode: Filesystem
+    storage: {{ .Values.persistentVolume.capacityStorage | default "10Gi" }}
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.persistentVolumeReclaimPolicy | default "Delete" }}
   # use StorageClass name
   storageClassName: {{ $fullName }}-storageclass
-  local:
+  hostPath:
     path: {{ .Values.persistentVolume.localPath }}
-  nodeAffinity:
-    required:
-      # kubenertes node. using kubectl get node
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              {{- with .Values.persistentVolume.matchExpressions.values }}
-              values:
-                # mongodb volume, we need storageclass, pv, pvc first
-                {{- toYaml . | nindent 16 }}
-              {{- end }}
 {{ end -}}
 ---
