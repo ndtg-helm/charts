@@ -1,0 +1,19 @@
+{{ if .Values.persistentVolume.create -}}
+{{- $fullName := include "redis.fullname" . -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ $fullName }}-pv
+  namespace: {{ .Values.namespace | default "default" }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.capacityStorage | default "20Gi" }}
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.persistentVolumeReclaimPolicy | default "Delete" }}
+  # use StorageClass name
+  storageClassName: {{ $fullName }}-storageclass
+  hostPath:
+    path: {{ .Values.mountPath }}
+{{ end -}}
+---

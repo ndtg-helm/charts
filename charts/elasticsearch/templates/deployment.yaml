@@ -64,6 +64,6 @@ spec:
       {{- end }}
       {{- with .Values.deployment.volumes }}
       volumes:
-      # mongodb volume, we need storageclass, pv, pvc first
+      # volume, we need storageclass, pv, pvc first
       {{- toYaml . | nindent 8 }}
       {{- end }}

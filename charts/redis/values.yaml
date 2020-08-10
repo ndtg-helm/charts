@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: redis
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -38,7 +38,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 6379
 
 ingress:
   enabled: false
@@ -77,3 +77,33 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# ----- Custom Chart
+mountPath: "/redis"
+
+deployment:
+  volumeMounts:
+    # It mount from container. It map with persistentVolume localPath
+    - name: redis-persistent-storage
+      mountPath: /data
+
+  volumes:
+    # mongodb volume, we need storageclass, pv, pvc first
+    - name: redis-persistent-storage
+      # use PersistentVolumeClaim name. Install helm folder in server first to get claimName.
+      persistentVolumeClaim:
+        claimName: ndtg-redis-pvc
+
+# PersistentVolumeClaim
+persistentVolumeClaim:
+  create: true
+  name: ndtg-redis-pvc
+
+# PersistentVolume
+persistentVolume:
+  create: true
+
+# StorageClass
+storageClass:
+  create: true
+  allowVolumeExpansion: true

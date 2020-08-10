@@ -1,0 +1,17 @@
+{{ if .Values.persistentVolumeClaim.create -}}
+{{- $fullName := include "redis.fullname" . -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistentVolumeClaim.name }}
+  namespace: {{ .Values.namespace | default "default" }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolumeClaim.requestsStorage | default "20Gi" }}
+  # use StorageClass name
+  storageClassName: {{ $fullName }}-storageclass
+{{ end -}}
+---
